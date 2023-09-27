@@ -1,0 +1,3 @@
+VALID_EMAIL = "tmdoronina@gmail.com"
+VALID_PHONE = "92345678"
+VALID_PASSWORD = "12345678Rr"
