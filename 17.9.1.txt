@@ -1,0 +1,88 @@
+# Функция определения числа
+def is_int(str):
+    str = str.replace(' ', '')
+    str = str.replace('-', '')
+
+    try:
+        int(str)
+        return True
+    except ValueError:
+        return False
+
+
+# Функция сортировки... пузырьком =)
+def sort_bubble(array):
+    for i in range(len(array)):
+        for j in range(len(array) - i - 1):
+            if array[j] > array[j + 1]:
+                array[j], array[j + 1] = array[j + 1], array[j]
+    return array
+
+
+# Бинарный поиск
+def binary_search(array, element, left, right):
+    if left > right:  # если левая граница превысила правую,
+        return False  # значит элемент отсутствует
+
+    middle = (right + left) // 2  # находимо середину
+    if array[middle] == element:  # если элемент в середине,
+        return middle  # возвращаем этот индекс
+    elif element < array[middle]:  # если элемент меньше элемента в середине
+        # рекурсивно ищем в левой половине
+        return binary_search(array, element, left, middle - 1)
+    else:  # иначе в правой
+        return binary_search(array, element, middle + 1, right)
+
+
+# Получение данных от пользователя
+numbers = input("Введите целые числа через пробел: ")
+user_number = int(input("Введите любое число: "))
+
+# Обработка ошибок
+if " " not in numbers:
+    print("\nВ ВВОДЕ ОТСУТСТВУЮТ ПРОБЕЛЫ (введите числа через пробел)")
+    numbers = input("Введите числа через пробел: ")
+    exit(1)
+
+if not is_int(numbers):
+    print('\nВведите числа, согласно условиям ввода.\n')
+    exit(1)
+else:
+    numbers = numbers.split()
+
+# Собираем введенные числа в массив и сортируем
+list_numbers = [int(item) for item in numbers]
+list_numbers = sort_bubble(list_numbers)
+print(f'Упорядоченный по возрастанию список: {list_numbers}')
+
+index = binary_search(list_numbers, user_number, 0, len(list_numbers) - 1)
+
+if index or type(index) == int:
+    print(f'Индекс введенного элемента: {index}')
+    if index - 1 >= 0:
+        print(f'Ближайшее число меньше введенного: {list_numbers[index - 1]}, его индекс {index - 1}')
+    else:
+        print(f'В списке нет меньшего числа!')
+    if index + 1 <= len(list_numbers) - 1:
+        print(f'Ближайшее число больше введенного: {list_numbers[index + 1]}, его индекс {index + 1}')
+    else:
+        print(f'В списке нет большего числа!')
+else:
+    print(f'В списке нет введенного числа!')
+    if user_number < list_numbers[0]:
+        print(f'Ближайшее число больше введенного: {list_numbers[0]}, его индекс 0')
+    elif user_number > list_numbers[len(list_numbers) - 1]:
+        print(
+            f'Ближайшее число меньше введенного: {list_numbers[len(list_numbers) - 1]}, его индекс {len(list_numbers) - 1}')
+    else:
+        i = 0
+        while i < len(list_numbers):
+            if user_number < list_numbers[i]:
+                min_value = list_numbers[i - 1]
+                break
+            if user_number > list_numbers[i]:
+                max_value = list_numbers[i + 1]
+            i += 1
+
+        print(f'Ближайшее число меньше введенного: {min_value}, его индекс {list_numbers.index(min_value)}')
+        print(f'Ближайшее число больше введенного: {max_value}, его индекс {list_numbers.index(max_value)}')
